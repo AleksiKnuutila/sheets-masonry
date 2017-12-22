@@ -42,18 +42,52 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oj.mustache/0.7.2/oj.mustache.js"></script>
+    <script src="bigtext.js"></script>
+
+<script id="template" type="x-tmpl-mustache">
+  <div class="header">
+    <span>{{ author }}</span>
+  </div>
+  <div class="cardbody">
+    <div class="title">{{ title }}</div>
+    <div class="content">{{ content }}</div>
+    {{{link}}}
+    <div class="category">{{ category }}</div>
+  </div>
+</script>
+
+
+
+
 
 <style>
 .grid-item {
   padding: 20px;
   max-width: 250px;
 }
-.author {
-  font-size: 24px;
+.grid-item--width2x {
+  padding: 20px;
+  max-width: 500px;
+}
+.header {
+  font-size: 2px;
+  background-color: coral;
+  padding: 16px;
+}
+.cardbody {
+  font-size: 14px;
+  background-color: lightgray;
+  padding: 16px;
+}
+.content {
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 .title {
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: bold;
 }
+
 
 </style>
 
