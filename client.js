@@ -1,5 +1,6 @@
 var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1MNKnttU9SxjD0AM_xnqqk2WU-mv5qr29mBs5KLYvFrc/edit?usp=sharing';
 var types = ["Artwork and exhibitions", "Cinema", "Organisations", "Theory"];
+var types_varnames = ["artwork", "cinema", "organisations", "theory"];
 
 var global_selection;
 var global_searchterm;
@@ -14,15 +15,15 @@ var type_clicked = function(type) {
 }
 
 var select_type = function(type) {
-  types.forEach(function (t) {
-    if(!t===type) $('#button-'+t).toggleClass('button-'+t);
+  types_varnames.forEach(function (t) {
+    if(t!=type) $('#button-'+t).toggleClass('button-'+t);
   });
   update_selection();
 }
 
 var deselect_type = function(type) {
-  types.forEach(function (t) {
-    if(!t===type) $('#button-'+t).toggleClass('button-'+t);
+  types_varnames.forEach(function (t) {
+    if(t!=type) $('#button-'+t).toggleClass('button-'+t);
   });
   update_selection();
 }
@@ -56,25 +57,25 @@ var get_colour = function(sheet, e) {
   return 'coral';
 }
 
+var sheetname_to_varname = function(sheetname) {
+	switch(sheetname) {
+		case 'Artwork and exhibitions':
+			return 'artwork';
+		case 'Theory':
+			return 'theory';
+		case 'Organisations':
+			return 'organisations';
+		case 'Cinema':
+			return 'cinema';
+	}
+}
+
 var prepare_classes = function(sheet, e) {
   var classes = 'grid-item';
   if(make_element_large(e)) {
     classes += ' grid-item--width2x';
   }
-  switch(sheet) {
-    case 'Artwork and exhibitions':
-      classes += ' grid-artwork';
-      break;
-    case 'Theory':
-      classes += ' grid-theory';
-      break;
-    case 'Organisations':
-      classes += ' grid-organisations';
-      break;
-    case 'Cinema':
-      classes += ' grid-cinema';
-      break;
-  }
+  classes += ' grid-'+sheetname_to_varname(sheet);
   return classes;
 }
 
