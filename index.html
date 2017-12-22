@@ -4,6 +4,7 @@
     <title>Sheetsee Template</title>
     <meta name="description" content="Get Google Spreadsheets as JSON">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900|Source+Code+Pro:400" rel="stylesheet" type="text/css">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet" type="text/css">
     <link id="favicon" rel="icon" href="https://cdn.glitch.com/2a43a85e-d9bc-4974-8e3a-7f225d942bf4%2Ffavicon.png?1490125448941" type="image/png">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,12 +20,17 @@
 
     <main class="container">
 
-      <p id="datafact">
-        Wait for it...
-      </p>
+		<div class="mdc-text-field mdc-text-field--upgraded">
+			<input type="text" class="mdc-text-field__input" id="searchfield" aria-controls="my-text-field-helper-text">
+			<label for="searchfield" class="mdc-text-field__label">Type to search</label>
+			<div class="mdc-text-field__bottom-line" style="transform-origin: 39px center"></div>
+		</div>
+
       <p>
-        This is a site set up with <a href="https://jlord.us/sheetsee.js">Sheetsee.js</a> that uses a server to back up your data.
-        It's a <a href="https://glitch.com">Glitch</a> project, so you can <a href="https://glitch.com">remix</a> it to start your own site! See the README.md for more instructions.
+        <button class="mdc-button mdc-button--raised category-button button-artwork" id="button-artwork" onclick="type_clicked('artwork')" data-demo-no-js="">Artwork and exhibitions</button>
+        <button class="mdc-button mdc-button--raised category-button button-theory" id="button-theory" onclick="type_clicked('theory')" data-demo-no-js="">Theory</button>
+        <button class="mdc-button mdc-button--raised category-button button-organisations" id="button-organisations" onclick="type_clicked('organisations')" data-demo-no-js="">Organisations</button>
+        <button class="mdc-button mdc-button--raised category-button button-cinema" id="button-cinema" onclick="type_clicked('cinema')" data-demo-no-js="">Cinema</button>
       </p>
     </main>
 
@@ -42,9 +48,11 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oj.mustache/0.7.2/oj.mustache.js"></script>
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
     <script src="bigtext.js"></script>
 
 <script id="template" type="x-tmpl-mustache">
+<div class="{{ classes }}">
   <div class="header">
     <span>{{ author }}</span>
   </div>
@@ -54,10 +62,8 @@
     {{{link}}}
     <div class="category">{{ category }}</div>
   </div>
+</div>
 </script>
-
-
-
 
 
 <style>

@@ -1,8 +1,48 @@
-// client-side js
-// run by the browser each time your view template is loaded
+var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1MNKnttU9SxjD0AM_xnqqk2WU-mv5qr29mBs5KLYvFrc/edit?usp=sharing';
+var types = ["Artwork and exhibitions", "Cinema", "Organisations", "Theory"];
 
-// by default, you've got jQuery,
-// add other scripts at the bottom of index.html
+var global_selection;
+var global_searchterm;
+var type_clicked = function(type) {
+  if(global_selection === type) {
+    global_selection = '';
+    deselect_type(type);
+  } else {
+    global_selection = type;
+    select_type(type);
+  }
+}
+
+var select_type = function(type) {
+  types.forEach(function (t) {
+    if(!t===type) $('#button-'+t).toggleClass('button-'+t);
+  });
+  update_selection();
+}
+
+var deselect_type = function(type) {
+  types.forEach(function (t) {
+    if(!t===type) $('#button-'+t).toggleClass('button-'+t);
+  });
+  update_selection();
+}
+
+var update_selection = function() {
+	$('.grid').isotope({ filter: function() {
+    if(global_selection) {
+      var classes = $(this).attr('class').split(' ');
+      if (!classes.includes('grid-'+global_selection)) return false;
+		}
+    if(global_searchterm) {
+  		var c = $(this).find('span').text();
+  		c += $(this).find('.title').text();
+  		c += $(this).find('.content').text();
+  		c += $(this).find('.category').text();
+      return c.search(new RegExp(global_searchterm, "i")) != -1;
+    }
+    return true;
+	}});
+}
 
 var get_one_of_fields = function(e, fields) {
   for(i=0;i<fields.length;i++) {
@@ -10,6 +50,32 @@ var get_one_of_fields = function(e, fields) {
       return e[fields[i]];
     }
   }
+}
+
+var get_colour = function(sheet, e) {
+  return 'coral';
+}
+
+var prepare_classes = function(sheet, e) {
+  var classes = 'grid-item';
+  if(make_element_large(e)) {
+    classes += ' grid-item--width2x';
+  }
+  switch(sheet) {
+    case 'Artwork and exhibitions':
+      classes += ' grid-artwork';
+      break;
+    case 'Theory':
+      classes += ' grid-theory';
+      break;
+    case 'Organisations':
+      classes += ' grid-organisations';
+      break;
+    case 'Cinema':
+      classes += ' grid-cinema';
+      break;
+  }
+  return classes;
 }
 
 var prepare_link = function(e) {
@@ -22,8 +88,8 @@ var prepare_content = function(e) {
   return e['Publication info'];
 }
 
-var make_element_large = function(view) {
-  if(view.author.length < 20) return true;
+var make_element_large = function(e) {
+  if(prepare_author(e).length > 20) return true;
   return false;
 }
 
@@ -31,8 +97,8 @@ var prepare_category = function(e) {
   return e['Main category'] + ' '+ e['Additional tags'];
 }
 
-var get_colour = function(sheet, e) {
-  return 'coral';
+var prepare_author = function(e) {
+  return get_one_of_fields(e, ['Artist/ Curator', 'Author/ Editor', 'Organisation', 'Director']);
 }
 
 var process_sheet = function(data) {
@@ -41,24 +107,19 @@ var process_sheet = function(data) {
   data.elements.forEach(function(e) {
     var view = {
       'colour': get_colour(data.name, e),
-      'author': get_one_of_fields(e, ['Artist/ Curator', 'Author/ Editor', 'Organisation', 'Director']),
+      'classes': prepare_classes(data.name, e),
+      'author': prepare_author(e),
       'title': e['Title'],
       'category': prepare_category(e),
       'link': prepare_link(e),
       'content': prepare_content(e)
     };
     var output = Mustache.render(template, view);
-    if(make_element_large(view)) {
-      $('.grid').append('<div class="grid-item">'+output+'</div>');
-    } else {
-      $('.grid').append('<div class="grid-item grid-item--width2x">'+output+'</div>');
-    }
+    $('.grid').append(output);
   });
 }
 
 $(function() {
-  console.log('hello world :o');
-  var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1MNKnttU9SxjD0AM_xnqqk2WU-mv5qr29mBs5KLYvFrc/edit?usp=sharing';
   Tabletop.init({
     key: publicSpreadsheetUrl,
     callback: function gotData (data, tabletop) {
@@ -73,10 +134,15 @@ $(function() {
       });
     }
   });
-
-//  $.get('sheet', function (data) {
-//    // Now use Sheetsee!
-//    console.log(Sheetsee)
-//    document.getElementById('datafact').innerHTML = 'Back with <b>' + data.length + '</b> rows from the spreadsheet!'
-//  })
+  window.mdc.autoInit();
+	var tfs = document.querySelectorAll(
+			'.mdc-text-field:not([data-demo-no-auto-js])'
+			);
+	for (var i = 0, tf; tf = tfs[i]; i++) {
+		mdc.textField.MDCTextField.attachTo(tf);
+	}
+  $('#searchfield').bind('input', function(){
+    global_searchterm = $(this).val();
+    update_selection();
+	});
 })
