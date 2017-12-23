@@ -137,6 +137,7 @@ $(function() {
   Tabletop.init({
     key: publicSpreadsheetUrl,
     callback: function gotData (data, tabletop) {
+      $("#loadingdiv").fadeOut(400);
       tabletop.modelNames.forEach(function(s) {
         process_sheet(data[s]);
       });
