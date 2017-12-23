@@ -1,4 +1,4 @@
-var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1MNKnttU9SxjD0AM_xnqqk2WU-mv5qr29mBs5KLYvFrc/edit?usp=sharing';
+var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1DEMNXeRNaLx-ogsm0-BTTEqeM2dQj10iOzXcatixcQ8/edit?usp=sharing';
 var types = ["Artwork and exhibitions", "Cinema", "Organisations", "Theory"];
 var types_varnames = ["artwork", "cinema", "organisations", "theory"];
 var colours = {
@@ -14,9 +14,12 @@ var type_clicked = function(type) {
   if(global_selection === type) {
     global_selection = '';
     deselect_type(type);
+		update_selection();
   } else {
+    if(global_selection) deselect_type(global_selection);
     global_selection = type;
     select_type(type);
+		update_selection();
   }
 }
 
@@ -24,14 +27,12 @@ var select_type = function(type) {
   types_varnames.forEach(function (t) {
     if(t!=type) $('#button-'+t).toggleClass('button-'+t);
   });
-  update_selection();
 }
 
 var deselect_type = function(type) {
   types_varnames.forEach(function (t) {
     if(t!=type) $('#button-'+t).toggleClass('button-'+t);
   });
-  update_selection();
 }
 
 var update_selection = function() {
