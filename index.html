@@ -14,13 +14,12 @@
   <body>
     <header class="container">
       <h1>
-        A sample Sheetsee Site with Data Backup
+        Feminist teaching spreadsheet!
       </h1>
     </header>
 
     <main class="container">
-
-		<div class="mdc-text-field mdc-text-field--upgraded">
+		<div class="searchdiv mdc-text-field mdc-text-field--upgraded">
 			<input type="text" class="mdc-text-field__input" id="searchfield" aria-controls="my-text-field-helper-text">
 			<label for="searchfield" class="mdc-text-field__label">Type to search</label>
 			<div class="mdc-text-field__bottom-line" style="transform-origin: 39px center"></div>
@@ -32,13 +31,6 @@
         <button class="mdc-button mdc-button--raised category-button button-organisations" id="button-organisations" onclick="type_clicked('organisations')" data-demo-no-js="">Organisations</button>
         <button class="mdc-button mdc-button--raised category-button button-cinema" id="button-cinema" onclick="type_clicked('cinema')" data-demo-no-js="">Cinema</button>
       </p>
-    </main>
-
-    <footer>
-      <a href="https://glitch.com/edit/#!/remix/sheetseetemplate">
-        Remix this in Glitch
-      </a>
-    </footer>
 
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
         integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
@@ -72,8 +64,10 @@
   max-width: 250px;
 }
 .grid-item--width2x {
-  padding: 20px;
-  max-width: 500px;
+	@media only screen and (min-width: 800px) {
+		max-width: 500px;
+		padding: 20px;
+	}
 }
 .header {
   font-size: 2px;
@@ -82,7 +76,7 @@
 }
 .cardbody {
   font-size: 14px;
-  background-color: lightgray;
+  background-color: #f0f0f0;
   padding: 16px;
 }
 .content {
@@ -99,6 +93,7 @@
 	padding-left: 27px;
 	padding-right: 27px;
 	margin-bottom: 16px;
+	margin-left: 20px;
 }
 .button-artwork:not(:disabled) {
 	background-color: #66c2a5;
@@ -112,11 +107,14 @@
 .button-cinema:not(:disabled) {
 	background-color: #e78ac3;
 }
+.searchdiv {
+  margin-left: 20px;
+}
 
 </style>
 
-    <div class="grid"></div>
-
-  </body>
+	<div class="grid"></div>
+    </main>
+	</body>
 </html>
 
