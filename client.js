@@ -1,6 +1,12 @@
 var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1MNKnttU9SxjD0AM_xnqqk2WU-mv5qr29mBs5KLYvFrc/edit?usp=sharing';
 var types = ["Artwork and exhibitions", "Cinema", "Organisations", "Theory"];
 var types_varnames = ["artwork", "cinema", "organisations", "theory"];
+var colours = {
+	'artwork': '#66c2a5',
+	'theory': '#fc8d62',
+	'organisations': '#8da0cb',
+	'cinema': '#e78ac3'
+};
 
 var global_selection;
 var global_searchterm;
@@ -30,6 +36,8 @@ var deselect_type = function(type) {
 
 var update_selection = function() {
 	$('.grid').isotope({ filter: function() {
+    var header = $(this).find('.header').text();
+    if(header.length < 3 || header.length > 30 || !/\S/.test(header)) return false;
     if(global_selection) {
       var classes = $(this).attr('class').split(' ');
       if (!classes.includes('grid-'+global_selection)) return false;
@@ -54,7 +62,12 @@ var get_one_of_fields = function(e, fields) {
 }
 
 var get_colour = function(sheet, e) {
-  return 'coral';
+	sheet_varname = sheetname_to_varname(sheet);
+	if(sheet_varname in colours) {
+		return colours[sheet_varname];
+	} else {
+		return 'coral';
+	}
 }
 
 var sheetname_to_varname = function(sheetname) {
@@ -132,7 +145,10 @@ $(function() {
       });
       $('.grid').isotope({
         itemSelector: '.grid-item',
+        getSortData: { name: '.bigtext-line0' },
+        sortBy: 'name'
       });
+			update_selection();
     }
   });
   window.mdc.autoInit();
